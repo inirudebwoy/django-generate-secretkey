@@ -1,0 +1,6 @@
+Django
+bumpversion
+nose
+tox
+django-nose
+flake8
