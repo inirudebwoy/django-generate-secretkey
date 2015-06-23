@@ -8,3 +8,11 @@ env:
 - TOXENV=py27-django17
 install: pip install tox
 script: tox
+deploy:
+  provider: pypi
+  user: michal.klich
+  password:
+    secure: NBkHTPSMkI9MkrZjIwZ90ord9n5gtnoGoXlNaiKRLgTdojlgZ+EnNKMcB8GNlVbtt1KUoEpzcyb9Gqg79IIEwTh+/s/DpDmrOXhHmtPZDm20VjPW7ZZRILRU/IFnh4XDbjMKDis6GfGg0ebTJm2DwwdarzmKCxq6h9P1WE1P9ZEV2hPg1ivZ0UKshF5vZyojs2MQi7f2RFuKR9O0UABF1v/Du35pS+RnTtRfRhYPZRWEDI5WSkF2tH8RG+87gy+vAJlpOK3gAFd8eV9a2yLCVkTjfnPTOz6sIAWBpup4ZhowVa18yY7zwe0moX24af1LNoxfjJTJpgeEYXhIYjEov6uLC86xgvqc2bqWMLZRUCI9mQFuWrJeMGSV14Pckuc1HxlSwsT9JlN+tTCZ1AzPnpn83uJeKsn9qA7d0fuGxVCA5j/32NDEUHtjYzMXBTnG0DaZ51PTgXKr0MGsFk3P1oVyiYke2h5+tBb5qYJOJRoafnQVsv53yEsTmK0A0yNNsL/vja8C9N/Jf79gym2ZqTdBXTmPkl6jQPHD+iFi/h+PWmEozsvZvfwQEMack176PdxsoTe04wLWiehZbApiPwgDoe3xm5kdK5QDmHY+rnqUXuyKvZhcivWTBQK1rLW9O89bQJyijSqMz2l1i0iI1PNrDtmTnAm06Ncl/facm6s=
+  on:
+    tags: true
+    repo: inirudebwoy/django-generate-secretkey
