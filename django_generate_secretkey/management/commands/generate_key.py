@@ -3,6 +3,7 @@ import os.path
 from tempfile import mkstemp
 from shutil import move
 from os import remove, close, linesep
+
 from django.core.management.base import BaseCommand
 from django.utils.crypto import get_random_string
 
@@ -27,15 +28,11 @@ class Command(BaseCommand):
 
         # TODO: kill these elif's
         if options['print']:
-            self.stdout.write(rnd_str)
+            self._print_random_string(rnd_str)
         elif options['path']:
-            if os.path.exists(options['path']):
-                self._replace(options['path'], r'^SECRET_KEY ?=',
-                              SK % rnd_str)
-            else:
-                self.stdout.write('File %s not found.' % options['path'])
+            self._replace_in_file(rnd_str, options['path'])
         else:
-            self.stdout.write(SK % rnd_str)
+            self._print_django_key(rnd_str)
 
     def _replace(self, file_path, pattern, subst):
         fh, abs_path = mkstemp()
@@ -50,3 +47,15 @@ class Command(BaseCommand):
         close(fh)
         remove(file_path)
         move(abs_path, file_path)
+
+    def _print_random_string(self, rnd_str):
+        self.stdout.write(rnd_str)
+
+    def _print_django_key(self, rnd_str):
+        self.stdout.write(SK % rnd_str)
+
+    def _replace_in_file(self, rnd_str, path):
+        if os.path.exists(path):
+            self._replace(path, r'^SECRET_KEY ?=', SK % rnd_str)
+        else:
+            self.stdout.write('File %s not found.' % path)

@@ -4,3 +4,4 @@ nose
 tox
 django-nose
 flake8
+mock
