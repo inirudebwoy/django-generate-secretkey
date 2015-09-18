@@ -26,7 +26,6 @@ class Command(BaseCommand):
         chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
         rnd_str = get_random_string(50, chars)
 
-        # TODO: kill these elif's
         if options['print']:
             self._print_random_string(rnd_str)
         elif options['path']:
