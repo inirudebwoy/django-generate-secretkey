@@ -38,7 +38,7 @@ class Command(BaseCommand):
         with open(abs_path, 'w') as new_file:
             with open(file_path) as old_file:
                 for line in old_file:
-                    secret_key = re.match(r'^SECRET_KEY ?=', line)
+                    secret_key = re.match(pattern, line)
                     if secret_key:
                         line = subst
                     new_file.write(line)
