@@ -5,29 +5,35 @@ from django.test import TestCase
 from django_generate_secretkey.management.commands.generate_key import Command
 
 
+def fill_file(file_path, text):
+    with open(file_path, 'w') as file_:
+        file_.write(text)
+
+
 class CommandTestCase(TestCase):
     def setUp(self):
         self.command = Command()
         _, self.tmp_path = mkstemp()
 
     def test_replace_pattern_not_found(self):
-        self.command._replace(self.tmp_path, '', 'foobar')
+        fill_file(self.tmp_path, 'bazinga')
+
+        self.command._replace_line(self.tmp_path, 'not in file', 'foobar')
         for line in open(self.tmp_path):
-            assert('foobar' in line)
+            assert 'bazinga' in line
+            assert not ('foobar' in line)
 
     def test_replace_pattern_found_once(self):
-        with open(self.tmp_path, 'w') as tmp_file:
-            tmp_file.write('foo')
+        fill_file(self.tmp_path, 'foo')
 
-        self.command._replace(self.tmp_path, 'foo', 'bar')
+        self.command._replace_line(self.tmp_path, 'foo', 'bar')
         for line in open(self.tmp_path):
             assert 'bar' in line
             assert not ('foo' in line)
 
     def test_replace_pattern_found_more_than_once(self):
-        with open(self.tmp_path, 'w') as tmp_file:
-            tmp_file.write('foo\nwaat\nfoo\nsomething')
+        fill_file(self.tmp_path, 'foo\nwaat\nfoo\nsomething')
 
-        self.command._replace(self.tmp_path, 'foo', 'bar')
+        self.command._replace_line(self.tmp_path, 'foo', 'bar')
         for line in open(self.tmp_path):
             assert not ('foo' in line)
