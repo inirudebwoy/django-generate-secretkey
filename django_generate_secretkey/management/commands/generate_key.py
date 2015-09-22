@@ -1,5 +1,4 @@
 import re
-import os.path
 from tempfile import mkstemp
 from shutil import move
 from os import remove, close, linesep
@@ -55,8 +54,9 @@ class Command(BaseCommand):
         self.stdout.write(SECRET_KEY_SETTINGS % rnd_str)
 
     def _replace_in_file(self, rnd_str, path):
-        if os.path.exists(path):
+        try:
             self._replace_line(path, SECRET_KEY_PATTERN,
                                SECRET_KEY_SETTINGS % rnd_str)
-        else:
-            self.stdout.write('File %s not found.' % path)
+        except IOError:
+            self.stdout.write('Could not replace the value in file.'
+                              'Check if file {} exists.'.format(path))
